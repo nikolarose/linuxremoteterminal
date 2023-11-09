@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Drawing;
-using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Windows.Forms;
+using LinuxRemoteTerminal.mysql;
 
 namespace LinuxRemoteTerminal
 {
     public partial class LoginForm : Form
     {
+        private MyConnector _connector = new MyConnector();
         private bool _isDragging;
         private Point _offset;
         public LoginForm()
@@ -20,6 +22,19 @@ namespace LinuxRemoteTerminal
             {
                 MessageBox.Show("Please fill in all fields!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            var username = textBox1.Text;
+            var password = "";
+            SHA256 sha256 = SHA256.Create();
+            password = BitConverter.ToString(sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(textBox2.Text))).Replace("-", "");
+            if (_connector.ValidateLogIn(username, password))
+            {
+                MessageBox.Show("Logged in!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Invalid credentials!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
