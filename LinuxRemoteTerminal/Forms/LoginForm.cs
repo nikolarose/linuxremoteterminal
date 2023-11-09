@@ -4,11 +4,11 @@ using System.Windows.Forms;
 
 namespace LinuxRemoteTerminal
 {
-    public partial class Form2 : Form
+    public partial class LoginForm : Form
     {
         private bool isDragging;
         private Point offset;
-        public Form2()
+        public LoginForm()
         {
             InitializeComponent();
         }
@@ -50,11 +50,6 @@ namespace LinuxRemoteTerminal
         private void label1_MouseUp(object sender, MouseEventArgs e)
         {
             isDragging = false;
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

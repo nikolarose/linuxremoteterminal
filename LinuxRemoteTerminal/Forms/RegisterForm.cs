@@ -4,11 +4,11 @@ using System.Windows.Forms;
 
 namespace LinuxRemoteTerminal
 {
-    public partial class Form1 : Form
+    public partial class RegisterForm : Form
     {
         private bool isDragging;
         private Point offset;
-        public Form1()
+        public RegisterForm()
         {
             InitializeComponent();
         }
