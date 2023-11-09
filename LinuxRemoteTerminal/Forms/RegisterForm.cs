@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Drawing;
+using System.Security.Cryptography;
 using System.Windows.Forms;
+using LinuxRemoteTerminal.mysql;
 
 namespace LinuxRemoteTerminal
 {
+    
     public partial class RegisterForm : Form
     {
-        private bool isDragging;
-        private Point offset;
+        MyConnector _connector = new MyConnector();
+        private bool _isDragging;
+        private Point _offset;
         public RegisterForm()
         {
             InitializeComponent();
@@ -19,6 +23,19 @@ namespace LinuxRemoteTerminal
             {
                 MessageBox.Show("Please fill in all fields!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            SHA256 sha256 = SHA256.Create();
+            var username = textBox1.Text;
+            var password = BitConverter.ToString(sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(textBox2.Text))).Replace("-", "");
+            if (_connector.CheckIfUserExists(username))
+            {
+                MessageBox.Show("User already exists!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            _connector.WriteRegister(username, password);
+            MessageBox.Show("User registered!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            LoginForm loginForm = new LoginForm();
+            loginForm.Show();
+            Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -33,23 +50,30 @@ namespace LinuxRemoteTerminal
 
         private void label1_MouseDown(object sender, MouseEventArgs e)
         {
-            isDragging = true;
-            offset = e.Location;
+            _isDragging = true;
+            _offset = e.Location;
         }
 
         private void label1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isDragging)
+            if (_isDragging)
             {
                 Point newLocation = PointToScreen(new Point(e.X, e.Y));
-                newLocation.Offset(-offset.X, -offset.Y);
+                newLocation.Offset(-_offset.X, -_offset.Y);
                 Location = newLocation;
             }
         }
 
         private void label1_MouseUp(object sender, MouseEventArgs e)
         {
-            isDragging = false;
+            _isDragging = false;
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            LoginForm loginForm = new LoginForm();
+            loginForm.Show();
+            Close();
         }
     }
 }

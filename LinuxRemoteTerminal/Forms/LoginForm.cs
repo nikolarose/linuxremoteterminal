@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace LinuxRemoteTerminal
 {
     public partial class LoginForm : Form
     {
-        private bool isDragging;
-        private Point offset;
+        private bool _isDragging;
+        private Point _offset;
         public LoginForm()
         {
             InitializeComponent();
@@ -33,23 +34,30 @@ namespace LinuxRemoteTerminal
 
         private void label1_MouseDown(object sender, MouseEventArgs e)
         {
-            isDragging = true;
-            offset = e.Location;
+            _isDragging = true;
+            _offset = e.Location;
         }
 
         private void label1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isDragging)
+            if (_isDragging)
             {
                 Point newLocation = PointToScreen(new Point(e.X, e.Y));
-                newLocation.Offset(-offset.X, -offset.Y);
+                newLocation.Offset(-_offset.X, -_offset.Y);
                 Location = newLocation;
             }
         }
 
         private void label1_MouseUp(object sender, MouseEventArgs e)
         {
-            isDragging = false;
+            _isDragging = false;
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            RegisterForm registerForm = new RegisterForm();
+            registerForm.Show();
+            Hide();
         }
     }
 }
