@@ -19,9 +19,10 @@ namespace LinuxRemoteTerminal
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text.Equals("") || textBox2.Text.Equals(""))
+            if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox2.Text))
             {
                 MessageBox.Show("Please fill in all fields!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
             SHA256 sha256 = SHA256.Create();
             var username = textBox1.Text;

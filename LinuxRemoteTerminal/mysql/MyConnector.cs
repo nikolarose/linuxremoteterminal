@@ -1,28 +1,30 @@
-﻿using MySqlConnector;
+﻿using System.Windows.Forms;
+using MySqlConnector;
 
 namespace LinuxRemoteTerminal.mysql
 {
     public class MyConnector
     {
-        private static string Server = "82.208.16.150";
-        private static string Port = "3306";
-        private static string Database = "admin_lrt";
-        private static string Username = "lrt_mp2024";
-        private static string Password = "%665Khky5";
+        private static string _server = "mysql.thenarbox.cloud";
+        private static string _port = "3306";
+        private static string _database = "maturita";
+        private static string _username = "maturita";
+        private static string _password = "etzqsS/@2e@kl0MA";
         
-        private static string _ConnectionString = $"Server={Server};Port={Port};Database={Database};Uid={Username};Pwd={Password};";
+        private static string _connectionString = $"Server={_server};Port={_port};Database={_database};Uid={_username};Pwd={_password};";
 
         private MySqlConnection _connection;
         private MySqlCommand _command;
         private void InitConnection()
         {
-            _connection = new MySqlConnection(_ConnectionString);
+            _connection = new MySqlConnection(_connectionString);
             try
             {
                 _connection.Open();
             }
             catch (MySqlException e)
             {
+                MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _connection.Close();
             }
         }
