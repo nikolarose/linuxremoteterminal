@@ -9,6 +9,7 @@ namespace LinuxRemoteTerminal
     
     public partial class RegisterForm : Form
     {
+        SHA256 sha256 = SHA256.Create();
         MyConnector _connector = new MyConnector();
         private bool _isDragging;
         private Point _offset;
@@ -24,7 +25,6 @@ namespace LinuxRemoteTerminal
                 MessageBox.Show("Please fill in all fields!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            SHA256 sha256 = SHA256.Create();
             var username = textBox1.Text;
             var password = BitConverter.ToString(sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(textBox2.Text))).Replace("-", "");
             if (_connector.CheckIfUserExists(username))

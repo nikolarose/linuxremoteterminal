@@ -21,6 +21,7 @@ namespace LinuxRemoteTerminal
             if (textBox1.Text.Equals("") || textBox2.Text.Equals(""))
             {
                 MessageBox.Show("Please fill in all fields!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
             var username = textBox1.Text;
             var password = "";
@@ -29,6 +30,9 @@ namespace LinuxRemoteTerminal
             if (_connector.ValidateLogIn(username, password))
             {
                 MessageBox.Show("Logged in!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ConsoleForm form = new ConsoleForm(username);
+                form.Show();
+                Hide();
             }
             else
             {
