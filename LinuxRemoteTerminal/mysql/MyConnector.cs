@@ -45,7 +45,35 @@ namespace LinuxRemoteTerminal.mysql
             _connection.Close();
             return false;
         }
-        
+
+        public void PasswordSet(string username, string password)
+        {
+            InitConnection();
+            var query = $"UPDATE users SET password = '{password}' WHERE username = '{username}';";
+            _command = new MySqlCommand(query);
+            _command.Connection = _connection;
+            _command.ExecuteNonQuery();
+            _connection.Close();
+        }
+
+
+        public bool PasswordReset(string username, string password, string recovery_code) { 
+            InitConnection();
+            var query = $"SELECT * FROM users WHERE username = '{username}' AND recovery_code = '{recovery_code}';";
+            _command = new MySqlCommand(query);
+            _command.Connection = _connection;
+            var reader = _command.ExecuteReader();
+            if (reader.HasRows)
+            {
+                PasswordSet(username, password);
+                return true;
+            }
+            reader.Close();
+            _connection.Close();
+            return false;
+
+        }
+
         public bool CheckIfUserExists(string username)
         {
             InitConnection();
@@ -64,10 +92,10 @@ namespace LinuxRemoteTerminal.mysql
             return false;
         }
         
-        public void WriteRegister(string username, string password)
+        public void WriteRegister(string username, string password, int recovery_code)
         {
             InitConnection();
-            var query = $"INSERT INTO users (username, password) VALUES ('{username}', '{password}');";
+            var query = $"INSERT INTO users (username, password, recovery_code) VALUES ('{username}', '{password}', '{recovery_code}');";
             _command = new MySqlCommand(query);
             _command.Connection = _connection;
             _command.ExecuteNonQuery();

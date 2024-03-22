@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using LinuxRemoteTerminal.Forms;
 using LinuxRemoteTerminal.mysql;
 
 namespace LinuxRemoteTerminal
@@ -14,13 +15,18 @@ namespace LinuxRemoteTerminal
         public LoginForm()
         {
             InitializeComponent();
+            label4.Hide();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            label4.Hide();
+            errorProvider1.Clear();
             if (textBox1.Text.Equals("") || textBox2.Text.Equals(""))
             {
-                MessageBox.Show("Please fill in all fields!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Prosím, vyplňte všechna pole!", "Chyba přihlášení", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                errorProvider1.SetError(button1, "Prosím, vyplňte všechna pole!");
+                label4.Show();
                 return;
             }
             var username = textBox1.Text;
@@ -29,21 +35,23 @@ namespace LinuxRemoteTerminal
             password = BitConverter.ToString(sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(textBox2.Text))).Replace("-", "");
             if (_connector.ValidateLogIn(username, password))
             {
-                MessageBox.Show("Logged in!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ConsoleForm form = new ConsoleForm(username);
                 form.Show();
                 Hide();
             }
             else
             {
-                MessageBox.Show("Invalid credentials!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                errorProvider1.SetError(button1, "Přihlášení selhalo");
+                label4.Show();
+                textBox1.Clear();
+                textBox2.Clear();
             }
             
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var exit = MessageBox.Show("Are you sure you want to exit?", "Exit", MessageBoxButtons.YesNo,
+            var exit = MessageBox.Show("Jste si jisti, že chcete aplikaci opustit?", "Vypnutí aplikace", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
             if (exit == DialogResult.Yes)
             {
@@ -77,6 +85,12 @@ namespace LinuxRemoteTerminal
             RegisterForm registerForm = new RegisterForm();
             registerForm.Show();
             Hide();
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            PasswordRecovery recovery = new PasswordRecovery();
+            recovery.ShowDialog();
         }
     }
 }

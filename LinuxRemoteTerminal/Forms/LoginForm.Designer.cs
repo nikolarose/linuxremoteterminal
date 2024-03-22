@@ -29,6 +29,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
@@ -40,8 +41,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -61,14 +66,14 @@
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.Color.White;
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(58)))), ((int)(((byte)(64)))));
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.button2.ForeColor = System.Drawing.Color.Black;
             this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.Location = new System.Drawing.Point(318, -13);
+            this.button2.Location = new System.Drawing.Point(318, -8);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(27, 49);
+            this.button2.Size = new System.Drawing.Size(27, 38);
             this.button2.TabIndex = 1;
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -85,15 +90,17 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(287, 22);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Linux Remote Terminal - Login\r\n";
+            this.label1.Text = "Linux Remote Terminal - Přihlášení";
             this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label1_MouseDown);
             this.label1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.label1_MouseMove);
             this.label1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.label1_MouseUp);
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.panel2.BackColor = System.Drawing.Color.Azure;
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Controls.Add(this.label4);
+            this.panel2.Controls.Add(this.linkLabel2);
             this.panel2.Controls.Add(this.linkLabel1);
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.textBox2);
@@ -112,28 +119,30 @@
             this.linkLabel1.ActiveLinkColor = System.Drawing.Color.DarkGray;
             this.linkLabel1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.linkLabel1.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel1.Location = new System.Drawing.Point(105, 146);
+            this.linkLabel1.Location = new System.Drawing.Point(11, 146);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(117, 31);
             this.linkLabel1.TabIndex = 5;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Not registred?";
+            this.linkLabel1.Text = "Registrace";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(95, 101);
+            this.button1.Location = new System.Drawing.Point(86, 92);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(139, 31);
+            this.button1.Size = new System.Drawing.Size(147, 31);
             this.button1.TabIndex = 4;
-            this.button1.Text = "Log in";
+            this.button1.Text = "Přihlásit se";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBox2
             // 
+            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.textBox2.Location = new System.Drawing.Point(133, 54);
             this.textBox2.Name = "textBox2";
+            this.textBox2.PasswordChar = '·';
             this.textBox2.Size = new System.Drawing.Size(143, 27);
             this.textBox2.TabIndex = 3;
             this.textBox2.UseSystemPasswordChar = true;
@@ -141,11 +150,11 @@
             // label3
             // 
             this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(44, 57);
+            this.label3.Location = new System.Drawing.Point(64, 57);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(90, 24);
+            this.label3.Size = new System.Drawing.Size(63, 24);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Password:";
+            this.label3.Text = "Heslo:";
             // 
             // textBox1
             // 
@@ -158,11 +167,40 @@
             // 
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(44, 21);
+            this.label2.Location = new System.Drawing.Point(26, 21);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(114, 24);
+            this.label2.Size = new System.Drawing.Size(102, 24);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Username:";
+            this.label2.Text = "Užv. jméno:";
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.BlinkRate = 0;
+            this.errorProvider1.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this.errorProvider1.ContainerControl = this;
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.ActiveLinkColor = System.Drawing.Color.DarkGray;
+            this.linkLabel2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.linkLabel2.LinkColor = System.Drawing.Color.Black;
+            this.linkLabel2.Location = new System.Drawing.Point(183, 146);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(150, 31);
+            this.linkLabel2.TabIndex = 6;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "Zapomenuté heslo";
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.Color.Maroon;
+            this.label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label4.Location = new System.Drawing.Point(86, 126);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(147, 20);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Přihlášení selhalo";
             // 
             // LoginForm
             // 
@@ -178,7 +216,9 @@
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.Button button2;
@@ -197,5 +237,9 @@
         private System.Windows.Forms.Panel panel1;
 
         #endregion
+
+        private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.Label label4;
     }
 }

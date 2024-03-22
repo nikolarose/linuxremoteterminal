@@ -6,9 +6,10 @@ using LinuxRemoteTerminal.mysql;
 
 namespace LinuxRemoteTerminal
 {
-    
+
     public partial class RegisterForm : Form
     {
+        Random random = new Random();
         SHA256 sha256 = SHA256.Create();
         MyConnector _connector = new MyConnector();
         private bool _isDragging;
@@ -16,24 +17,31 @@ namespace LinuxRemoteTerminal
         public RegisterForm()
         {
             InitializeComponent();
+            label4.Hide();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            label4.Hide();
             if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox2.Text))
             {
-                MessageBox.Show("Please fill in all fields!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                errorProvider1.SetError(button1, "Prosím, vyplňte všechna pole!");
+                label4.Show();
                 return;
             }
             var username = textBox1.Text;
             var password = BitConverter.ToString(sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(textBox2.Text))).Replace("-", "");
             if (_connector.CheckIfUserExists(username))
             {
-                MessageBox.Show("User already exists!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                errorProvider1.SetError(button1, "Toto uživatelské jméno již existuje. Zvolte si prosím jiné");
+                label4.Show();
+                textBox1.Clear();
+                textBox2.Clear();
                 return;
             }
-            _connector.WriteRegister(username, password);
-            MessageBox.Show("User registered!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            int recovery_code = random.Next(100000, 1000000);
+            MessageBox.Show("Uchovejte tento kód k případné potřebě obnovy hesla!: " + recovery_code, "Reset hesla", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            _connector.WriteRegister(username, password, recovery_code);
             LoginForm loginForm = new LoginForm();
             loginForm.Show();
             Close();
@@ -41,7 +49,7 @@ namespace LinuxRemoteTerminal
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var exit = MessageBox.Show("Are you sure you want to exit?", "Exit", MessageBoxButtons.YesNo,
+            var exit = MessageBox.Show("Jste si jisti, že chcete aplikaci opustit?", "Vypnutí aplikace", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
             if (exit == DialogResult.Yes)
             {
