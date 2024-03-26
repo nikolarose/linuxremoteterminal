@@ -1,13 +1,7 @@
 ﻿using LinuxRemoteTerminal.mysql;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LinuxRemoteTerminal.Forms
@@ -59,7 +53,8 @@ namespace LinuxRemoteTerminal.Forms
                 errorProvider1.SetError(button1, "Prosím, vyplňte všechna pole!");
                 return;
             }
-            if (!_connector.CheckIfUserExists(textBox1.Text)){
+            if (!_connector.CheckIfUserExists(textBox1.Text))
+            {
                 label5.Show();
                 errorProvider1.SetError(button1, "Zadané uživatelské jméno neexistuje!");
                 textBox1.Clear();

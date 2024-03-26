@@ -1,9 +1,9 @@
-﻿using System;
+﻿using LinuxRemoteTerminal.Forms;
+using LinuxRemoteTerminal.mysql;
+using System;
 using System.Drawing;
 using System.Security.Cryptography;
 using System.Windows.Forms;
-using LinuxRemoteTerminal.Forms;
-using LinuxRemoteTerminal.mysql;
 
 namespace LinuxRemoteTerminal
 {
@@ -24,7 +24,6 @@ namespace LinuxRemoteTerminal
             errorProvider1.Clear();
             if (textBox1.Text.Equals("") || textBox2.Text.Equals(""))
             {
-                MessageBox.Show("Prosím, vyplňte všechna pole!", "Chyba přihlášení", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 errorProvider1.SetError(button1, "Prosím, vyplňte všechna pole!");
                 label4.Show();
                 return;
@@ -35,7 +34,7 @@ namespace LinuxRemoteTerminal
             password = BitConverter.ToString(sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(textBox2.Text))).Replace("-", "");
             if (_connector.ValidateLogIn(username, password))
             {
-                ConsoleForm form = new ConsoleForm(username);
+                ConsoleForm form = new ConsoleForm();
                 form.Show();
                 Hide();
             }
@@ -46,7 +45,7 @@ namespace LinuxRemoteTerminal
                 textBox1.Clear();
                 textBox2.Clear();
             }
-            
+
         }
 
         private void button2_Click(object sender, EventArgs e)

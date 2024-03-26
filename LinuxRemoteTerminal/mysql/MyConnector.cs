@@ -1,5 +1,5 @@
-﻿using System.Windows.Forms;
-using MySqlConnector;
+﻿using MySqlConnector;
+using System.Windows.Forms;
 
 namespace LinuxRemoteTerminal.mysql
 {
@@ -10,7 +10,7 @@ namespace LinuxRemoteTerminal.mysql
         private static string _database = "maturita";
         private static string _username = "maturita";
         private static string _password = "etzqsS/@2e@kl0MA";
-        
+
         private static string _connectionString = $"Server={_server};Port={_port};Database={_database};Uid={_username};Pwd={_password};";
 
         private MySqlConnection _connection;
@@ -57,7 +57,8 @@ namespace LinuxRemoteTerminal.mysql
         }
 
 
-        public bool PasswordReset(string username, string password, string recovery_code) { 
+        public bool PasswordReset(string username, string password, string recovery_code)
+        {
             InitConnection();
             var query = $"SELECT * FROM users WHERE username = '{username}' AND recovery_code = '{recovery_code}';";
             _command = new MySqlCommand(query);
@@ -91,7 +92,7 @@ namespace LinuxRemoteTerminal.mysql
             _connection.Close();
             return false;
         }
-        
+
         public void WriteRegister(string username, string password, int recovery_code)
         {
             InitConnection();
