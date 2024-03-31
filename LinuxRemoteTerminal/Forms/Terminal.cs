@@ -1,8 +1,8 @@
-﻿using Renci.SshNet;
+﻿using LinuxRemoteTerminal.Utils;
+using Renci.SshNet;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -27,6 +27,8 @@ namespace LinuxRemoteTerminal
             richTextBox1.DetectUrls = false;
             richTextBox1.Multiline = true;
             richTextBox1.Clear();
+            textBox1.Enabled = false;
+            button1.Enabled = false;
             Console.SetOut(new MultiTextWriter(new ControlWriter(richTextBox1), Console.Out));
         }
 
@@ -53,50 +55,52 @@ namespace LinuxRemoteTerminal
 
         public void PrintToConsole(string message)
         {
-            message = message.Replace("&#91;", "["); // [ -> [
-            message = message.Replace("&#93;", "]"); // ] -> ]
-
-            BeginInvoke((MethodInvoker)delegate
+            Invoke((MethodInvoker)delegate
             {
-                Console.WriteLine(message);
+                richTextBox1.AppendText(message + Environment.NewLine);
                 richTextBox1.ScrollToCaret();
             });
         }
 
-        public async Task ExecuteSshCommandAsync(string command)
+        public void ExecuteSshCommand(string command)
         {
             try
             {
                 var sshCommand = client.CreateCommand(command);
-                var asyncResult = sshCommand.BeginExecute();
+                var result = sshCommand.BeginExecute();
 
-                using (var reader = new StreamReader(sshCommand.OutputStream))
+                using (var outputReader = new StreamReader(sshCommand.OutputStream))
                 {
-                    while (!asyncResult.IsCompleted)
-                    {
-                        string line = await reader.ReadLineAsync();
-                        if (line != null)
-                        {
-                            PrintToConsole(line);
-                        }
-                    }
+                    PrintToConsole(outputReader.ReadToEnd());
                 }
 
-                var result = sshCommand.EndExecute(asyncResult);
-                PrintToConsole(result);
+                sshCommand.EndExecute(result);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            if (textBox1.Text.Equals("clear"))
+            {
+                richTextBox1.Clear();
+                textBox1.Clear();
+                return;
+            }
+
+            try
+            {
+                ExecuteSshCommand(textBox1.Text);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Chyba při provádění SSH příkazu: " + ex.Message);
             }
-        }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Task.Run(() =>
-            {
-                ExecuteSshCommandAsync(textBox1.Text);
-            });
+            textBox1.Clear();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -108,6 +112,8 @@ namespace LinuxRemoteTerminal
                 Application.Exit();
             }
         }
+
+
 
         private async void button3_Click(object sender, EventArgs e)
         {
@@ -148,6 +154,11 @@ namespace LinuxRemoteTerminal
                     if (client.IsConnected)
                     {
                         Console.WriteLine("Připojeno k serveru: " + textBox2.Text);
+                        textBox1.Enabled = true;
+                        button1.Enabled = true;
+                        timer1.Start();
+                        label8.Text = await Task.Run(() => GeoUtil.GetCountry(textBox2.Text));
+                        label9.Text = PingUtil.getPing(textBox2.Text).ToString();
                         textBox2.Enabled = false;
                         textBox3.Enabled = false;
                         textBox4.Enabled = false;
@@ -171,7 +182,11 @@ namespace LinuxRemoteTerminal
                     client.Disconnect();
                     client.Dispose();
                 }
-
+                timer1.Stop();
+                textBox1.Enabled = false;
+                button1.Enabled = false;
+                label9.Text = "-";
+                label8.Text = "-";
                 textBox2.Enabled = true;
                 textBox3.Enabled = true;
                 textBox4.Enabled = true;
@@ -183,6 +198,24 @@ namespace LinuxRemoteTerminal
                 textBox5.Clear();
                 button3.Text = "Spojit";
             }
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                button1.PerformClick();
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            label9.Text = PingUtil.getPing(textBox2.Text).ToString();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Minimized;
         }
     }
 }
