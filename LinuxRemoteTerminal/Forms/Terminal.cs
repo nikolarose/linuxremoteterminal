@@ -1,6 +1,9 @@
-﻿using LinuxRemoteTerminal.Utils;
+﻿using LinuxRemoteTerminal.Forms;
+using LinuxRemoteTerminal.mysql;
+using LinuxRemoteTerminal.Utils;
 using Renci.SshNet;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
@@ -13,11 +16,17 @@ namespace LinuxRemoteTerminal
         private bool _isDragging;
         private Point _offset;
         SshClient client;
-        public ConsoleForm()
+        MyConnector _connector = new MyConnector();
+        string user = "";
+        bool editMode = false;
+        public List<string> output = new List<string>();
+
+        public ConsoleForm(string user)
         {
             InitializeComponent();
             label6.Hide();
-
+            this.user = user;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             richTextBox1.Text = "";
             richTextBox1.Rtf = "";
             richTextBox1.ReadOnly = true;
@@ -27,6 +36,7 @@ namespace LinuxRemoteTerminal
             richTextBox1.DetectUrls = false;
             richTextBox1.Multiline = true;
             richTextBox1.Clear();
+            label13.Hide();
             textBox1.Enabled = false;
             button1.Enabled = false;
             Console.SetOut(new MultiTextWriter(new ControlWriter(richTextBox1), Console.Out));
@@ -62,23 +72,28 @@ namespace LinuxRemoteTerminal
             });
         }
 
-        public void ExecuteSshCommand(string command)
+        public async Task ExecuteSshCommandAsync(string command)
         {
             try
             {
                 var sshCommand = client.CreateCommand(command);
-                var result = sshCommand.BeginExecute();
+                var asyncResult = sshCommand.BeginExecute();
+
+                while (!asyncResult.IsCompleted)
+                {
+                    await Task.Delay(100);
+                }
 
                 using (var outputReader = new StreamReader(sshCommand.OutputStream))
                 {
-                    PrintToConsole(outputReader.ReadToEnd());
+                    string output = await outputReader.ReadToEndAsync();
+                    sshCommand.EndExecute(asyncResult);
+                    PrintToConsole(output);
                 }
-
-                sshCommand.EndExecute(result);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show(ex.Message);
+                throw;
             }
         }
 
@@ -93,7 +108,7 @@ namespace LinuxRemoteTerminal
 
             try
             {
-                ExecuteSshCommand(textBox1.Text);
+                ExecuteSshCommandAsync(textBox1.Text);
             }
             catch (Exception ex)
             {
@@ -161,6 +176,7 @@ namespace LinuxRemoteTerminal
                         label9.Text = PingUtil.getPing(textBox2.Text).ToString();
                         textBox2.Enabled = false;
                         textBox3.Enabled = false;
+                        comboBox1.Enabled = false;
                         textBox4.Enabled = false;
                         textBox5.Enabled = false;
                         button3.Text = "Odpojit se";
@@ -183,13 +199,16 @@ namespace LinuxRemoteTerminal
                     client.Dispose();
                 }
                 timer1.Stop();
+                richTextBox1.Clear();
                 textBox1.Enabled = false;
                 button1.Enabled = false;
                 label9.Text = "-";
                 label8.Text = "-";
+                comboBox1.SelectedIndex = 0;
                 textBox2.Enabled = true;
                 textBox3.Enabled = true;
                 textBox4.Enabled = true;
+                comboBox1.Enabled = true;
                 textBox5.Enabled = true;
 
                 textBox2.Clear();
@@ -216,6 +235,83 @@ namespace LinuxRemoteTerminal
         private void button4_Click(object sender, EventArgs e)
         {
             WindowState = FormWindowState.Minimized;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!editMode)
+            {
+                if (comboBox1.SelectedIndex >= 1)
+                {
+                    textBox2.Text = _connector.getIP(user, comboBox1.Text);
+                    textBox3.Text = _connector.getPort(user, comboBox1.Text).ToString();
+                    textBox4.Text = _connector.getUsername(user, comboBox1.Text);
+                }
+            }
+            else
+            {
+                if (comboBox1.SelectedIndex >= 1)
+                {
+                    ServerEdit edit = new ServerEdit(user, comboBox1.Text, _connector.getIP(user, comboBox1.Text), _connector.getUsername(user, comboBox1.Text), _connector.getPort(user, comboBox1.Text));
+                    edit.ShowDialog();
+                    button6.PerformClick();
+                }
+            }
+
+        }
+
+        public void RefreshData()
+        {
+            var data = _connector.GetData(user);
+            comboBox1.DataSource = data;
+            comboBox1.Refresh();
+            comboBox1.SelectedIndex = 0;
+        }
+
+        private void ConsoleForm_Load(object sender, EventArgs e)
+        {
+            var data = _connector.GetData(user);
+            comboBox1.DataSource = data;
+            comboBox1.Refresh();
+            comboBox1.SelectedIndex = 0;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            ServerAdd server = new ServerAdd(user);
+            server.ShowDialog();
+            RefreshData();
+            comboBox1.SelectedIndex = 0;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (!editMode)
+            {
+                editMode = true;
+                textBox2.Enabled = false;
+                textBox3.Enabled = false;
+                textBox4.Enabled = false;
+                textBox5.Enabled = false;
+                button3.Enabled = false;
+                label13.Show();
+            }
+            else
+            {
+                editMode = false;
+                label13.Hide();
+                RefreshData();
+                textBox2.Enabled = true;
+                textBox3.Enabled = true;
+                textBox4.Enabled = true;
+                textBox5.Enabled = true;
+                button3.Enabled = true;
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            RefreshData();
         }
     }
 }

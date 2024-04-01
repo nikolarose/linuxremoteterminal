@@ -30,11 +30,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegisterForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -42,7 +42,6 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.label4 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
@@ -69,7 +68,7 @@
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.button3.ForeColor = System.Drawing.Color.Black;
-            this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
+            this.button3.Image = global::LinuxRemoteTerminal.Properties.Resources.icons8_cross_50__1_;
             this.button3.Location = new System.Drawing.Point(318, -8);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(27, 38);
@@ -108,6 +107,16 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(346, 178);
             this.panel2.TabIndex = 1;
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.Color.Maroon;
+            this.label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label4.Location = new System.Drawing.Point(92, 121);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(155, 20);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Registrace selhala";
             // 
             // linkLabel1
             // 
@@ -173,16 +182,6 @@
             this.errorProvider1.BlinkRate = 0;
             this.errorProvider1.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.errorProvider1.ContainerControl = this;
-            // 
-            // label4
-            // 
-            this.label4.BackColor = System.Drawing.Color.Maroon;
-            this.label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label4.Location = new System.Drawing.Point(92, 121);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(155, 20);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Registrace selhala";
             // 
             // RegisterForm
             // 

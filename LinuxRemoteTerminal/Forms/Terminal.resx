@@ -117,30 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="button4.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAvSURBVGhD7c6xCQAwEAMx77900hh+BoNUXnUBAAAAgGVv
-        VPdP+5zuAwAAAMCg5AMFhW6g2VjVjgAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="button2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
-        DQAACw0B7QfALAAAAX1JREFUaEPtmMlKA0EURRu3EoeAghNodi78Axd+tOBKVFyIA4K6iBOoX9Kei6+g
-        SCtJd9LpKnkHLjQ1vXup0F2VwnEcx3Ecx3FaoSzLfXSGNqxpalhrER2jI2tqH4qdIvGE1q25MazRQ5da
-        ELTmgnW1C4XW0IOqwhA13hnmaifOtRB8oYF1zQcKrqI7VYdntGldE8Oc0RB71jVfKNw4DGPjEJ+omxAB
-        DMRhXtDYMIxRiAtNgO5DBDCiMLdyBQqzZV0V6FtCVxoI6YQIYCgO84oqYWhLO0QAYyvo1zA8L6M4xK51
-        pQkGR8Nso7xCBDDaR/dyDW/o+uexfEc7NiwPMKyduZF74wPlsRMxmM4/CIbz/2lhtPLmQtm9sf78lvCc
-        zTdk7NedtjSPJgEMTXzeoi/pc1atEzBj0ji+BzBQO0SAsWmEoXB8S1SI2rdE5iiM7v6ik9uhQjyqOszi
-        qttNGIr9mz8fDpDCTB0iwFoKc4IOrclxHMdxHMdxZklRfAMaSAbP41kmewAAAABJRU5ErkJggg==
-</value>
-  </data>
   <metadata name="errorProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
   <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>146, 17</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="button4.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EAAACxABrSO9dQAAAC9JREFUaEPtzrEJADAQAzHvv3TSGH4Gg1RedQEAAACAZW9U90/7nO4DAAAAwKDk
+        AwWFbqDZWNWOAAAAAElFTkSuQmCC
+</value>
+  </data>
 </root>

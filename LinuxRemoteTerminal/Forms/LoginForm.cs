@@ -34,7 +34,7 @@ namespace LinuxRemoteTerminal
             password = BitConverter.ToString(sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(textBox2.Text))).Replace("-", "");
             if (_connector.ValidateLogIn(username, password))
             {
-                ConsoleForm form = new ConsoleForm();
+                ConsoleForm form = new ConsoleForm(textBox1.Text);
                 form.Show();
                 Hide();
             }
